@@ -1,0 +1,68 @@
+{
+  // Debug C++ programs inside an udocker container using gdb
+  // Prereqs:
+  //  - udocker is installed and the container exists locally
+  //  - The container has gdb installed (e.g., apt-get install -y gdb)
+  //  - The workspace will be mounted to /workspace in the container
+  //  - Build your binary inside the container at /workspace/build/bin/<your-exe>
+  //  - Update the "program" field below if your path/binary is different
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C++ Launch (gdb in udocker)",
+      "type": "cppdbg",
+      "request": "launch",
+      "MIMode": "gdb",
+      // Path to the program INSIDE the container
+      "program": "/workspace/build/bin/argvnaut",
+      "args": [],
+      // Working directory INSIDE the container
+      "cwd": "/workspace",
+      "environment": [],
+      "externalConsole": false,
+      "stopAtEntry": false,
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      // Map container source paths to local paths so breakpoints resolve
+      "sourceFileMap": {
+        "/workspace": "${workspaceFolder}"
+      },
+      // Optional: run a build task first
+      // "preLaunchTask": "build",
+      // Run the debugger INSIDE the container via udocker
+      "pipeTransport": {
+        "pipeProgram": "udocker",
+        "pipeArgs": [
+          "run",
+          "--hostenv",
+          "--volume",
+          "${workspaceFolder}:/workspace",
+          "${input:udockerContainer}"
+        ],
+        // Path to gdb inside the container
+        "debuggerPath": "/usr/bin/gdb",
+        // Optional working dir for the launcher command on the HOST
+        "pipeCwd": "${workspaceFolder}"
+      },
+      // Helpful logging during setup
+      "logging": {
+        "moduleLoad": false,
+        "trace": true,
+        "traceResponse": false
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "udockerContainer",
+      "type": "promptString",
+      "description": "udocker container name to run (e.g., ubuntu-dev)",
+      "default": "my-container"
+    }
+  ]
+}
