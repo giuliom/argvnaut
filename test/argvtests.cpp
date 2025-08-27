@@ -6,7 +6,9 @@
 
 TEST(SUITE_NAME, testOneArg) 
 {
-
-    EXPECT_TRUE(true);
+    ArgvNaut::Parser parser("testprog");
+    parser.addPositional("input", 1);
+    const bool result = parser.parse(2, (const char*[]){"testprog", "file.txt"});
+    EXPECT_TRUE(result);
 
 }

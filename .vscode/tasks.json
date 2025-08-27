@@ -12,7 +12,7 @@
 			"isBackground": false,
             "presentation": {
                 "reveal": "always",
-                "close": true
+                "close": true,
             }
 		}
 	]
