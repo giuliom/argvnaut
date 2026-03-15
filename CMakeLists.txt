@@ -7,8 +7,8 @@ set(TEST_NAME ArgvTest)
 # Enable folders in IDEs (optional)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# GoogleTest requires at least C++23
-set(CMAKE_CXX_STANDARD 23)
+# GoogleTest requires at least C++20
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Avoid warnings by using new policy
