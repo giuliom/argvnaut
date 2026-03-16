@@ -10,7 +10,8 @@ TEST(SUITE_NAME, testOnePositional)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addPositional("input", 1);
-    const bool result = parser.parse(2, (const char*[]){"testprog", "file.txt"});
+    const char* argv[] = {"testprog", "file.txt"};
+    const bool result = parser.parse(2, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("input").value(), "file.txt");
 }
@@ -20,7 +21,8 @@ TEST(SUITE_NAME, testTwoPositionals)
     ArgvNaut::Parser parser("testprog");
     parser.addPositional("input", 1);
     parser.addPositional("output", 2);
-    const bool result = parser.parse(3, (const char*[]){"testprog", "in.txt", "out.txt"});
+    const char* argv[] = {"testprog", "in.txt", "out.txt"};
+    const bool result = parser.parse(3, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("input").value(), "in.txt");
     EXPECT_EQ(parser.getString("output").value(), "out.txt");
@@ -30,7 +32,8 @@ TEST(SUITE_NAME, testMissingRequiredPositional)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addPositional("input", 1);
-    const bool result = parser.parse(1, (const char*[]){"testprog"});
+    const char* argv[] = {"testprog"};
+    const bool result = parser.parse(1, argv);
     EXPECT_FALSE(result);
 }
 
@@ -40,7 +43,8 @@ TEST(SUITE_NAME, testFlagLong)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addFlag("verbose", "v");
-    const bool result = parser.parse(2, (const char*[]){"testprog", "--verbose"});
+    const char* argv[] = {"testprog", "--verbose"};
+    const bool result = parser.parse(2, argv);
     EXPECT_TRUE(result);
     EXPECT_TRUE(parser.getFlag("verbose"));
 }
@@ -49,7 +53,8 @@ TEST(SUITE_NAME, testFlagShort)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addFlag("verbose", "v");
-    const bool result = parser.parse(2, (const char*[]){"testprog", "-v"});
+    const char* argv[] = {"testprog", "-v"};
+    const bool result = parser.parse(2, argv);
     EXPECT_TRUE(result);
     EXPECT_TRUE(parser.getFlag("verbose"));
 }
@@ -58,7 +63,8 @@ TEST(SUITE_NAME, testFlagDefault)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addFlag("verbose", "v");
-    const bool result = parser.parse(1, (const char*[]){"testprog"});
+    const char* argv[] = {"testprog"};
+    const bool result = parser.parse(1, argv);
     EXPECT_TRUE(result);
     EXPECT_FALSE(parser.getFlag("verbose"));
 }
@@ -69,7 +75,8 @@ TEST(SUITE_NAME, testOptionLong)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("output", "o");
-    const bool result = parser.parse(3, (const char*[]){"testprog", "--output", "file.txt"});
+    const char* argv[] = {"testprog", "--output", "file.txt"};
+    const bool result = parser.parse(3, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("output").value(), "file.txt");
 }
@@ -78,7 +85,8 @@ TEST(SUITE_NAME, testOptionShort)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("output", "o");
-    const bool result = parser.parse(3, (const char*[]){"testprog", "-o", "file.txt"});
+    const char* argv[] = {"testprog", "-o", "file.txt"};
+    const bool result = parser.parse(3, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("output").value(), "file.txt");
 }
@@ -87,7 +95,8 @@ TEST(SUITE_NAME, testOptionEqualssyntax)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("output", "o");
-    const bool result = parser.parse(2, (const char*[]){"testprog", "--output=file.txt"});
+    const char* argv[] = {"testprog", "--output=file.txt"};
+    const bool result = parser.parse(2, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("output").value(), "file.txt");
 }
@@ -96,7 +105,8 @@ TEST(SUITE_NAME, testOptionDefault)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("output", "o", ArgvNaut::OptionType::STRING, "default.txt");
-    const bool result = parser.parse(1, (const char*[]){"testprog"});
+    const char* argv[] = {"testprog"};
+    const bool result = parser.parse(1, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("output").value(), "default.txt");
 }
@@ -105,7 +115,8 @@ TEST(SUITE_NAME, testRequiredOptionMissing)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("output", "o", ArgvNaut::OptionType::STRING, "", true);
-    const bool result = parser.parse(1, (const char*[]){"testprog"});
+    const char* argv[] = {"testprog"};
+    const bool result = parser.parse(1, argv);
     EXPECT_FALSE(result);
 }
 
@@ -115,7 +126,8 @@ TEST(SUITE_NAME, testIntOption)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("count", "n", ArgvNaut::OptionType::INTEGER);
-    const bool result = parser.parse(3, (const char*[]){"testprog", "--count", "42"});
+    const char* argv[] = {"testprog", "--count", "42"};
+    const bool result = parser.parse(3, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getInt("count").value(), 42);
 }
@@ -124,7 +136,8 @@ TEST(SUITE_NAME, testFloatOption)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addOption("ratio", "r", ArgvNaut::OptionType::FLOAT);
-    const bool result = parser.parse(3, (const char*[]){"testprog", "--ratio", "3.14"});
+    const char* argv[] = {"testprog", "--ratio", "3.14"};
+    const bool result = parser.parse(3, argv);
     EXPECT_TRUE(result);
     EXPECT_NEAR(parser.getFloat("ratio").value(), 3.14f, 0.001f);
 }
@@ -138,7 +151,8 @@ TEST(SUITE_NAME, testMixedArgs)
     parser.addFlag("verbose", "v");
     parser.addOption("output", "o");
 
-    const bool result = parser.parse(6, (const char*[]){"testprog", "-v", "--output", "out.txt", "in.txt", "--verbose"});
+    const char* argv[] = {"testprog", "-v", "--output", "out.txt", "in.txt", "--verbose"};
+    const bool result = parser.parse(6, argv);
     EXPECT_TRUE(result);
     EXPECT_EQ(parser.getString("input").value(), "in.txt");
     EXPECT_EQ(parser.getString("output").value(), "out.txt");
@@ -150,7 +164,8 @@ TEST(SUITE_NAME, testMixedArgs)
 TEST(SUITE_NAME, testUnknownFlag)
 {
     ArgvNaut::Parser parser("testprog");
-    const bool result = parser.parse(2, (const char*[]){"testprog", "--unknown"});
+    const char* argv[] = {"testprog", "--unknown"};
+    const bool result = parser.parse(2, argv);
     EXPECT_FALSE(result);
 }
 
@@ -158,7 +173,8 @@ TEST(SUITE_NAME, testExtraPositional)
 {
     ArgvNaut::Parser parser("testprog");
     parser.addPositional("input", 1);
-    const bool result = parser.parse(3, (const char*[]){"testprog", "a.txt", "b.txt"});
+    const char* argv[] = {"testprog", "a.txt", "b.txt"};
+    const bool result = parser.parse(3, argv);
     EXPECT_FALSE(result);
 }
 
@@ -169,7 +185,8 @@ TEST(SUITE_NAME, testHas)
     ArgvNaut::Parser parser("testprog");
     parser.addPositional("input", 1);
     parser.addOption("output", "o");
-    parser.parse(2, (const char*[]){"testprog", "in.txt"});
+    const char* argv[] = {"testprog", "in.txt"};
+    parser.parse(2, argv);
     EXPECT_TRUE(parser.has("input"));
     EXPECT_FALSE(parser.has("output"));
 }
