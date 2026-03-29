@@ -11,10 +11,28 @@
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
+      "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "Build Tests",
       "MIMode": "lldb",
       "logging": {
         "programOutput": true,
+      }
+    },
+    {
+      "name": "Sample Debug",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/ArgvnautSample",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "Build Sample",
+      "MIMode": "lldb",
+      "logging": {
+        "programOutput": true
       }
     }
   ]

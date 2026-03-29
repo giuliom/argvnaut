@@ -4,7 +4,21 @@
 		{
 			"label": "Build Tests",
 			"type": "shell",
-			"command": "mkdir -p build && cd build && cmake .. && make -j$(nproc 2>/dev/null || echo 4)",
+			"command": "mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make ArgvTest -j$(nproc 2>/dev/null || echo 4)",
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false,
+            "presentation": {
+                "reveal": "always",
+                "close": true,
+            }
+		},
+		{
+			"label": "Build Sample",
+			"type": "shell",
+			"command": "mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make ArgvnautSample -j$(nproc 2>/dev/null || echo 4)",
 			"group": "build",
 			"problemMatcher": [
 				"$gcc"

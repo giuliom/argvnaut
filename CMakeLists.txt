@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.23)
 project(ArgvnautProject LANGUAGES CXX)
 
 set(LIBRARY_NAME ArgvnautLib)
+set(SAMPLE_NAME ArgvnautSample)
 set(TEST_NAME ArgvTest)
 
 # Enable folders in IDEs (optional)
@@ -32,6 +33,12 @@ FetchContent_MakeAvailable(googletest)
 add_library(${LIBRARY_NAME} INTERFACE)
 target_include_directories(${LIBRARY_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# ------ Argvnaut Sample ------
+add_executable(${SAMPLE_NAME} src/main.cpp)
+target_link_libraries(
+    ${SAMPLE_NAME} 
+    PRIVATE ${LIBRARY_NAME})
+
 # ------ Test Target ------
 file (GLOB TESTS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
 add_executable(${TEST_NAME} ${TESTS}) 
@@ -42,7 +49,7 @@ target_link_libraries(
     ${LIBRARY_NAME}
   )
 
-  target_include_directories(${TEST_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+target_include_directories(${TEST_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
-  include(GoogleTest)
-  gtest_discover_tests(${TEST_NAME})
+include(GoogleTest)
+gtest_discover_tests(${TEST_NAME})
