@@ -16,7 +16,8 @@ int main()
 	parser.addOption("samples", "p", ArgvNaut::OptionType::INTEGER, "4");
 	parser.addOption("bounces", "b", ArgvNaut::OptionType::INTEGER, "3");
 
-    parser.parse(2, (const char*[]){"testprog", "-h"});
+    const char* args[] = {"testprog", "-h"};
+    parser.parse(2, args);
 
     parser.getFlag("help");
 
